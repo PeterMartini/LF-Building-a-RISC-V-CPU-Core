@@ -45,8 +45,10 @@
    
    
    // YOUR CODE HERE
-   // ...
-   
+
+   // Lab 1: Copy NextPC to PC, add 4 (one 32-bit word) to NextPC
+   $pc[31:0] = >>1$next_pc;
+   $next_pc[31:0] = $reset ? 32'd0 : $pc + 32'd4;
    
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
