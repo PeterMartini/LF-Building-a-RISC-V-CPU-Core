@@ -65,6 +65,15 @@
    $is_b_instr = $instr[6:2] ==  5'b11000;
    $is_j_instr = $instr[6:2] ==  5'b11011;
 
+   // Lab 4: Decode data.
+   //   Part 1: Decode the fields
+   $funct7[6:0] = $instr[31:25];
+   $rs2[4:0]    = $instr[24:20];
+   $rs1[4:0]    = $instr[19:15];
+   $funct3[2:0] = $instr[14:12];
+   $rd[4:0]     = $instr[11:7];
+   $opcode[6:0] = $instr[6:0];
+
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
    *failed = *cyc_cnt > M4_MAX_CYC;
