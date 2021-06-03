@@ -117,6 +117,12 @@
    // Lab 6: Copy (and enable) the register file macro
    m4+rf(32, 32, $reset, $rd_valid, $rd, $rd_data[31:0], $rs1_valid, $rs1, $src1_value, $rs2_valid, $rs2, $src2_value)
 
+   // Lab 7: Implement the ALU
+   $result[31:0] =
+      $is_addi ? $src1_value + $imm :
+      $is_add  ? $src1_value + $src2_value :
+      32'b0;
+
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
    *failed = *cyc_cnt > M4_MAX_CYC;
