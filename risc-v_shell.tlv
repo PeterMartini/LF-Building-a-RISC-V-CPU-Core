@@ -91,6 +91,8 @@
                $is_u_instr ||
                $is_j_instr;
    $imm_valid = ^ $is_r_instr;
+   //  Part 3: Turn off some warnings
+   `BOGUS_USE($rd $rd_valid $rs1 $rs1_valid $rs2 $rs2_valid $funct3 $funct3_valid $funct7 $funct7_valid $imm_valid $opcode)
 
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
