@@ -49,7 +49,7 @@
 
    // Lab 1: Copy NextPC to PC, add 4 (one 32-bit word) to NextPC
    $pc[31:0] = >>1$next_pc;
-   $next_pc[31:0] = $reset ? 32'd0 : $pc + 32'd4;
+   // $next_pc is now part of Lab 9
 
    // Lab 2: Fetch the instruction from the instruction cache
    `READONLY_MEM($pc , $$instr[31:0])
@@ -128,8 +128,21 @@
    // Lab 8: Write the result back
    $rd_data[31:0] = $result;
 
+   // Lab 9: Handle branches
+   $taken_br = $is_beq ? $src1_value == $src2_value :
+               $is_bne ? $src1_value != $src2_value :
+               $is_blt ? ($src1_value < $src2_value) ^ ($src1_value[31] != $src2_value[31]) :
+               $is_bge ? ($src1_value >= $src2_value) ^ ($src1_value[31] != $src2_value[31]) :
+               $is_bltu ? $src1_value < $src2_value :
+               $is_bgeu ? $src1_value >= $src2_value :
+               0'b0;
+   $br_tgt_pc[31:0] = $pc + $imm;
+   $next_pc[31:0] = $reset ? 32'd0 :
+                    $taken_br ? $br_tgt_pc :
+                    $pc + 32'd4;
+
    // Assert these to end simulation (before Makerchip cycle limit).
-   *passed = 1'b0;
+   m4+tb()
    *failed = *cyc_cnt > M4_MAX_CYC;
    
    //m4+dmem(32, 32, $reset, $addr[4:0], $wr_en, $wr_data[31:0], $rd_en, $rd_data)
